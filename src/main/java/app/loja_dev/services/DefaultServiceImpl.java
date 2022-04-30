@@ -6,6 +6,7 @@ import app.loja_dev.repositories.DefaultRepository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
+import javax.persistence.EntityNotFoundException;
 import java.io.Serializable;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public abstract class DefaultServiceImpl<E extends Default, ID extends Serializa
     @Override
     @Transactional
     public E findByID(ID id) throws Exception {
-        return repository.findById(id).orElseThrow( () -> new RuntimeException("Entidade não encontrado."));
+        return repository.findById(id).orElseThrow( () -> new EntityNotFoundException("Entidade não encontrado."));
     }
 
     @Override
