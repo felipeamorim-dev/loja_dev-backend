@@ -22,6 +22,9 @@ public class Usuario extends Default{
     @Column(name = "email", nullable = false)
     private String email;
 
+    @Column(unique = true, name = "senha", nullable = false)
+    private String senha;
+
     @Column(name = "urlImagePerfil")
     private String urlImagePerfil;
 
