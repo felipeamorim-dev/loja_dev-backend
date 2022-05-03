@@ -1,10 +1,9 @@
 package app.loja_dev.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "usuario")
@@ -27,5 +26,9 @@ public class Usuario extends Default{
 
     @Column(name = "urlImagePerfil")
     private String urlImagePerfil;
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
+    private Carteira carteira;
 
 }
