@@ -4,6 +4,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "produtos")
@@ -23,4 +25,7 @@ public class Produto extends Default {
 
     @Column(name = "url_image")
     private String urlImage;
+
+    @OneToMany(mappedBy = "produto")
+    private Set<ItemPedido> itemPedidos = new HashSet<>();
 }

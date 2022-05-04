@@ -24,7 +24,7 @@ public class CarteiraController {
     public ResponseEntity<?> getSaldo(@PathVariable Long usuarioId) {
         try{
             if(ObjectUtils.isEmpty(usuarioId)) {
-               throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "ID do usuário inválido");
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "ID do usuário inválido");
             }
             return ResponseEntity.ok(carteiraService.saldo(usuarioId));
         }catch (Exception e){

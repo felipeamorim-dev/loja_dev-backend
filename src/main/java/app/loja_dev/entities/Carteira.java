@@ -1,5 +1,6 @@
 package app.loja_dev.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class Carteira extends Default{
 
-    @OneToOne
+    @OneToOne @JsonIgnore
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 

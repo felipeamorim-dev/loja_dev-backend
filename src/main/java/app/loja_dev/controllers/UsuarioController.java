@@ -2,8 +2,10 @@ package app.loja_dev.controllers;
 
 import app.loja_dev.dto.ProdutoDTO;
 import app.loja_dev.dto.UsuarioDTO;
+import app.loja_dev.entities.Carteira;
 import app.loja_dev.entities.Produto;
 import app.loja_dev.entities.Usuario;
+import app.loja_dev.services.CarteiraService;
 import app.loja_dev.services.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -22,21 +24,25 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = "/api/usuarios")
-@RequiredArgsConstructor
 public class UsuarioController {
 
     @Autowired
-    private final UsuarioService usuarioService;
-
-    private final ModelMapper modelMapper;
+    private UsuarioService usuarioService;
+    @Autowired
+    private CarteiraService carteiraService;
+    @Autowired
+    private ModelMapper modelMapper;
 
     @PostMapping
     public ResponseEntity<?> criar(@Valid @RequestBody Usuario usuario){
         try {
             URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(usuario.getId()).toUri();
-            return ResponseEntity.created(uri).body(modelMapper.map(usuarioService.save(usuario), UsuarioDTO.class));
+            Usuario u = usuarioService.save(usuario);
+            Carteira carteira = new Carteira(u, 0.0);
+            carteiraService.save(carteira);
+            return ResponseEntity.created(uri).body(modelMapper.map(u, UsuarioDTO.class));
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Erro ao tentar salvar o produto");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Erro ao tentar salvar o usuário");
         }
     }
 
