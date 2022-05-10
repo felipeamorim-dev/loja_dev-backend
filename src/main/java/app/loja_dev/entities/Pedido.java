@@ -29,7 +29,7 @@ public class Pedido extends Default {
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 
-    @OneToMany(mappedBy = "pedido")
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
     private Set<ItemPedido> itemPedidos = new HashSet<>();
 
     public Pedido(Instant momento, StatusPedido statusPedido, Usuario usuario){

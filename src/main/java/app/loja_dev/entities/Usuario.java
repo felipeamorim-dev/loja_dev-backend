@@ -2,6 +2,9 @@ package app.loja_dev.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.springframework.data.util.Lazy;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -34,5 +37,9 @@ public class Usuario extends Default{
 
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
     private Carteira carteira;
+
+    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL) @JsonIgnore
+    @JoinColumn(name = "id_carrinho", referencedColumnName = "id")
+    private Carrinho carrinho;
 
 }

@@ -1,5 +1,6 @@
 package app.loja_dev.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -26,6 +27,11 @@ public class Produto extends Default {
     @Column(name = "url_image")
     private String urlImage;
 
-    @OneToMany(mappedBy = "produto")
+    @JsonIgnore
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<ItemPedido> itemPedidos = new HashSet<>();
+
+    @ManyToOne(fetch = FetchType.EAGER) @JsonIgnore
+    @JoinColumn(name = "id_carrinho", referencedColumnName = "id")
+    private Carrinho carrinho;
 }

@@ -3,6 +3,7 @@ package app.loja_dev.services;
 import app.loja_dev.entities.Default;
 import app.loja_dev.entities.Produto;
 import app.loja_dev.repositories.DefaultRepository;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
