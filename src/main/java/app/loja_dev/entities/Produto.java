@@ -4,8 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
-import java.io.Serializable;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -24,12 +25,12 @@ public class Produto extends Default {
     @Column(name = "preco")
     private Double preco;
 
-    @Column(name = "url_image")
+    @Column(name = "url_image", columnDefinition = "text")
     private String urlImage;
 
     @JsonIgnore
     @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<ItemPedido> itemPedidos = new HashSet<>();
+    private List<Item> itens = Collections.emptyList();
 
     @ManyToOne(fetch = FetchType.EAGER) @JsonIgnore
     @JoinColumn(name = "id_carrinho", referencedColumnName = "id")

@@ -56,7 +56,7 @@ public class ProdutoController {
             if(ObjectUtils.isEmpty(id)) {
                 return new ResponseEntity("Produto não encontrado", HttpStatus.NOT_FOUND);
             } else {
-                return ResponseEntity.ok().body(produtoService.findByID(id));
+                return ResponseEntity.ok().body(modelMapper.map(produtoService.findByID(id), ProdutoDTO.class));
             }
         }catch (Exception e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Nenhum produto foi encontrado.");
@@ -71,8 +71,7 @@ public class ProdutoController {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Nenhum produto encontrado para realizar atualização de dados");
             }
             modelMapper.map(produtoDTO, p);
-            produtoService.save(p);
-            return ResponseEntity.ok().body(p);
+            return ResponseEntity.ok().body(modelMapper.map( produtoService.save(p), ProdutoDTO.class));
         }catch (Exception e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Erro na atualização do produto.");
         }

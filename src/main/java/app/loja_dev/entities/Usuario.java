@@ -32,10 +32,10 @@ public class Usuario extends Default{
     @Column(name = "urlImagePerfil")
     private String urlImagePerfil;
 
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Pedido> pedidos = new ArrayList<>();
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<Pedido> pedidos;
 
-    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "usuario", fetch = FetchType.LAZY, orphanRemoval = true)
     private Carteira carteira;
 
     @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL) @JsonIgnore

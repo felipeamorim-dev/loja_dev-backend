@@ -4,45 +4,44 @@ import app.loja_dev.enums.StatusPedido;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
-@Entity
-@Table(name = "pedido")
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
+@Entity
+@Table(name = "pedido")
 public class Pedido extends Default {
 
-    private Integer statusPedido;
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "status")
+    private StatusPedido statusPedido;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
     @Column(name = "data_compra")
     private Instant momento;
 
-    @ManyToOne
-    @JoinColumn(name = "id_usuario")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
-    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
-    private Set<ItemPedido> itemPedidos = new HashSet<>();
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "item_pedido",
+            joinColumns = @JoinColumn(name = "pedido_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "item_id", referencedColumnName = "id")
+    )
+    private List<Item> itens = Collections.emptyList();
 
     public Pedido(Instant momento, StatusPedido statusPedido, Usuario usuario){
         this.momento = momento;
         setStatusPedido(statusPedido);
         this.usuario = usuario;
     }
-
-    public void setStatusPedido(StatusPedido statusPedido) {
-        if(statusPedido != null) this.statusPedido = statusPedido.getCode();
-    }
-
-    public StatusPedido getStatusPedido(){
-        return StatusPedido.of(statusPedido);
-    }
 }
+
+

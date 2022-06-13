@@ -11,19 +11,10 @@ import javax.persistence.*;
 @Data
 public class ItemPedido extends Default{
 
-    @ManyToOne
-    @JoinColumn(name = "id_pedido", nullable = false)
-    private Pedido pedido;
+    @Column(name = "pedido_id")
+    private Long pedidoId;
 
-    @ManyToOne
-    @JoinColumn(name = "id_produto", nullable = false)
-    private Produto produto;
-
-    @Column(name = "quantidade")
-    private Integer quantidade;
-
-    @Column(name = "preco")
-    private Double preco;
-
+    @Column(name = "item_id")
+    private Long itemId;
 
 }
