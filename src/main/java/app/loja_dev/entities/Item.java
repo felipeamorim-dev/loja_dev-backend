@@ -16,6 +16,9 @@ public class Item extends Default{
     @Column(name = "preco_unitario")
     private Double preco;
 
-    @ManyToMany(mappedBy = "itens")
+    @ManyToMany(mappedBy = "itens", fetch = FetchType.LAZY)
     private List<Pedido> pedidos;
+
+    @ManyToMany(mappedBy = "itens", fetch = FetchType.LAZY)
+    private List<Carrinho> carrinhos;
 }
