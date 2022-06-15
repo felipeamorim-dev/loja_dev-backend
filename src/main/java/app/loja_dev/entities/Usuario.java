@@ -32,6 +32,7 @@ public class Usuario extends Default{
     @Column(name = "urlImagePerfil")
     private String urlImagePerfil;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Pedido> pedidos;
 

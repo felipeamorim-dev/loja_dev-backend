@@ -15,6 +15,6 @@ import java.io.Serializable;
 @MappedSuperclass
 public class Default implements Serializable {
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 }
