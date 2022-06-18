@@ -3,6 +3,7 @@ package app.loja_dev.entities;
 import lombok.Data;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.LazyCollection;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -13,7 +14,6 @@ import java.util.List;
 @Data
 public class Carrinho extends Default{
 
-    @Fetch(FetchMode.JOIN)
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "item_carrinho",

@@ -39,7 +39,8 @@ public class Usuario extends Default{
     @OneToOne(mappedBy = "usuario", fetch = FetchType.LAZY, orphanRemoval = true)
     private Carteira carteira;
 
-    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL) @JsonIgnore
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "id_carrinho", referencedColumnName = "id")
     private Carrinho carrinho;
 

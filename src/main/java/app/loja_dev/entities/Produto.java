@@ -5,9 +5,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+
 
 @Entity
 @Table(name = "produtos")
@@ -29,7 +28,7 @@ public class Produto extends Default {
     private String urlImage;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Item> itens = Collections.emptyList();
 
     @ManyToOne(fetch = FetchType.EAGER) @JsonIgnore

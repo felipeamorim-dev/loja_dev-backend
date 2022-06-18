@@ -2,15 +2,22 @@ package app.loja_dev.services;
 
 import app.loja_dev.dto.ItemDTO;
 import app.loja_dev.entities.Carrinho;
-import org.springframework.data.repository.query.Param;
+import java.util.List;
 
-import java.util.Optional;
 
 public interface CarrinhoService {
 
-    Carrinho findByUsuario(@Param("usuarioId") Long usuarioId);
+    Carrinho findByUsuario( Long usuarioId);
 
-    Carrinho create(@Param("usuarioId") Long usuarioId) throws Exception;
+    Carrinho create(Long usuarioId) throws Exception;
 
     Carrinho addItemCarrinho(ItemDTO itemDTO, Long usuarioId) throws Exception;
+
+    List<ItemDTO> findAllItens(Long usuarioId) throws Exception;
+
+    void updateItem(Long usuarioId, ItemDTO itemDTO) throws Exception;
+
+    void deleteItem(Long usuarioId, Long itemId) throws Exception;
+
+    void deleteCarrinho(Long usuarioId) throws Exception;
 }
