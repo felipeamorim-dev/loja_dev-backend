@@ -15,5 +15,6 @@ public class UsuarioDTO {
     private Long id;
     @NotNull
     private String nome;
+    private String nomeUsuario;
     private String urlImagePerfil;
 }

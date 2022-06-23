@@ -66,12 +66,13 @@ public class UsuarioController {
             if(ObjectUtils.isEmpty(id)) {
                 return new ResponseEntity("Usuário não encontrado", HttpStatus.NOT_FOUND);
             } else {
-                return ResponseEntity.ok().body(usuarioService.findByID(id));
+                return ResponseEntity.ok().body(modelMapper.map(usuarioService.findByID(id), UsuarioDTO.class));
             }
         }catch (Exception e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Nenhum usuário foi encontrado.");
         }
     }
+
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<?> atualizar(@Valid @RequestBody Usuario usuario, @PathVariable Long id){

@@ -29,13 +29,10 @@ public class Usuario extends Default{
     @Column(unique = true, name = "senha", nullable = false)
     private String senha;
 
-    @Column(name = "urlImagePerfil")
+    @Column(name = "url_image_perfil")
     private String urlImagePerfil;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<Pedido> pedidos;
-
     @OneToOne(mappedBy = "usuario", fetch = FetchType.LAZY, orphanRemoval = true)
     private Carteira carteira;
 
