@@ -1,10 +1,6 @@
 package app.loja_dev.entities;
 
 import lombok.Data;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.LazyCollection;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;

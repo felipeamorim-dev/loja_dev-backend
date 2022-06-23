@@ -17,7 +17,7 @@ public interface CarrinhoService {
 
     void updateItem(Long usuarioId, ItemDTO itemDTO) throws Exception;
 
-    void deleteItem(Long usuarioId, Long itemId) throws Exception;
+    void deleteItem(Long usuarioId, Long itemId);
 
     void deleteCarrinho(Long usuarioId) throws Exception;
 }

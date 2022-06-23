@@ -14,8 +14,8 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class Carteira extends Default{
 
-    @OneToOne @JsonIgnore
-    @JoinColumn(name = "id_usuario")
+    @OneToOne
+    @JoinColumn(name = "id_usuario", referencedColumnName = "id")
     private Usuario usuario;
 
     @Column(name = "saldo")

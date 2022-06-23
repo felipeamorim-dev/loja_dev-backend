@@ -96,7 +96,7 @@ public class CarrinhoServiceImpl implements CarrinhoService {
 
         int index = car.getItens().indexOf(itemRemove.get(0));
         car.getItens().remove(index);
-        carrinhoRepository.save(car);
+        carrinhoRepository.saveAndFlush(car);
     }
 
     @Override
