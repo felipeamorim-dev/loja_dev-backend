@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -25,17 +27,17 @@ public class Pedido extends Default {
     @Column(name = "data_compra")
     private Instant momento;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "item_pedido",
             joinColumns = @JoinColumn(name = "pedido_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "item_id", referencedColumnName = "id")
     )
-    private List<Item> itens = Collections.emptyList();
+    private List<Item> itens = new ArrayList<>();
 
     public Pedido(Instant momento, StatusPedido statusPedido, Usuario usuario){
         this.momento = momento;
