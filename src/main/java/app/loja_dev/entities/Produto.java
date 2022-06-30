@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -27,11 +28,4 @@ public class Produto extends Default {
     @Column(name = "url_image", columnDefinition = "text")
     private String urlImage;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Item> itens = Collections.emptyList();
-
-    @ManyToOne(fetch = FetchType.EAGER) @JsonIgnore
-    @JoinColumn(name = "id_carrinho", referencedColumnName = "id")
-    private Carrinho carrinho;
 }

@@ -6,11 +6,11 @@ import java.util.Arrays;
 
 public enum StatusPedido {
 
-    AGUARDANDO_PAGAMENTO(1),
-    PAGO(2),
-    ENVIADO(3),
-    ENTREGUE(4),
-    CANCELADO(5);
+    AGUARDANDO_PAGAMENTO(0),
+    PAGO(1),
+    ENVIADO(2),
+    ENTREGUE(3),
+    CANCELADO(4);
 
     @Getter
     private int code;

@@ -2,7 +2,6 @@ package app.loja_dev.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -26,9 +25,12 @@ public class Item extends Default{
 
     @JsonIgnore
     @ManyToMany(mappedBy = "itens", fetch = FetchType.LAZY)
-    private List<Pedido> pedidos;
-
-    @JsonIgnore
-    @ManyToMany(mappedBy = "itens", fetch = FetchType.LAZY)
     private List<Carrinho> carrinhos;
+
+    /**
+     * Método para calcular o custo do item selecionado para comprar
+     */
+    public Double calcularCusto(){
+        return preco * quantidade;
+    }
 }

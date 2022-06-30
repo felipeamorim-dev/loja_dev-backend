@@ -5,9 +5,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
 import javax.persistence.*;
 import java.time.Instant;
 import java.util.*;
@@ -17,6 +14,13 @@ import java.util.*;
 @Data
 @Entity
 @Table(name = "pedido")
+@NamedEntityGraph(name = "pedido_graph", attributeNodes = {
+        @NamedAttributeNode(value = "usuario", subgraph = "us"),
+        @NamedAttributeNode(value = "itens", subgraph = "item"),
+    }, subgraphs = {
+        @NamedSubgraph(name = "us", attributeNodes = @NamedAttributeNode("carteira")),
+        @NamedSubgraph(name = "item", attributeNodes = @NamedAttributeNode("produto")),
+})
 public class Pedido extends Default {
 
     @Enumerated(EnumType.ORDINAL)
@@ -31,7 +35,10 @@ public class Pedido extends Default {
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Column(name = "total")
+    private Double total;
+
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "item_pedido",
             joinColumns = @JoinColumn(name = "pedido_id", referencedColumnName = "id"),
