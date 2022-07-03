@@ -46,10 +46,23 @@ public class PedidoController {
     }
 
     @GetMapping
-    public ResponseEntity<?> findAllPedidoPerUsuario(@RequestParam("usuarioId") Long usuarioId, @RequestParam(name = "status", defaultValue = "0") Integer status) {
+    public ResponseEntity<?> findAllPedidoPerStatusAndUsuario(@RequestParam("usuarioId") Long usuarioId, @RequestParam(name = "status") Integer status) {
         try{
             LOGGER.info("Buscando pedido do usuario: {} com status: {}", usuarioId, status);
             return ResponseEntity.ok(pedidoService.findAllPedidoPerStatusAndUsuarioId(status, usuarioId).stream()
+                    .map(pedido -> mapper.map(pedido,  PedidoResponse.class))
+                    .collect(Collectors.toList()));
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Erro ao tentar buscar por pedidos do usuario");
+        }
+    }
+
+    @GetMapping(path = "/usuario")
+    public ResponseEntity<?> findAllPedidoPerUsuario(@RequestParam("usuarioId") Long usuarioId) {
+        try{
+            LOGGER.info("Buscando pedido do usuario: {}", usuarioId);
+            return ResponseEntity.ok(pedidoService.findAllPedidoPerUsuarioId(usuarioId).stream()
                     .map(pedido -> mapper.map(pedido,  PedidoResponse.class))
                     .collect(Collectors.toList()));
         }catch (Exception e){

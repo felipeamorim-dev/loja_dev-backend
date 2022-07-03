@@ -83,6 +83,19 @@ public class PedidoServiceImpl implements PedidoService{
     }
 
     @Override
+    public List<Pedido> findAllPedidoPerUsuarioId(Long usuarioId) {
+        List<Pedido> pedidos = em.createQuery("SELECT DISTINCT p FROM Pedido p JOIN FETCH p.itens ip " +
+                        "JOIN FETCH ip.produto " +
+                        "JOIN FETCH p.usuario u " +
+                        "JOIN FETCH u.carteira " +
+                        "WHERE p.usuario.id = :usuario_id", Pedido.class)
+                .setParameter("usuario_id", usuarioId)
+                .getResultList();
+
+        return pedidos;
+    }
+
+    @Override
     public void updateStatusPedido(Integer status, Long pedidoId) {
         Pedido pedido = findPedidoById(pedidoId);
         pedido.setStatusPedido(StatusPedido.of(status));

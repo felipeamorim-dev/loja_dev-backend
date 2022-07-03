@@ -13,5 +13,7 @@ public interface PedidoService {
 
     List<Pedido> findAllPedidoPerStatusAndUsuarioId(Integer status, Long usuarioId);
 
+    List<Pedido> findAllPedidoPerUsuarioId(Long usuarioId);
+
     void updateStatusPedido(Integer status, Long pedidoId);
 }
