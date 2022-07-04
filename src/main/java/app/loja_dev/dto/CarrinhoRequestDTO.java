@@ -10,8 +10,8 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class CarrinhoRequestDTO extends Default {
 
-    @NotNull
+    @NotNull(message = "O id do usuário é requerido")
     private Long usuarioId;
-    @NotNull
+    @NotNull(message = "O id do produto é requerido")
     private Long produtoId;
 }

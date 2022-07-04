@@ -9,7 +9,7 @@ public class PagamentoDTO {
 
     private Long id;
 
-    @NotNull
+    @NotNull(message = "O Id do pedido é requerido")
     private Long pedidoId;
 
 }

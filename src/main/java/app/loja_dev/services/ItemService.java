@@ -9,9 +9,9 @@ import java.util.Optional;
 
 public interface ItemService {
 
-    Item addItem(ItemDTO itemDTO) throws Exception;
+    Item addItem(ItemDTO itemDTO);
 
-    List<ItemDTO> convertList(List<Item> items) throws Exception;
+    List<ItemDTO> convertList(List<Item> items);
 
     Item findById(Long id);
 }

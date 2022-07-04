@@ -16,13 +16,13 @@ public class ProdutoDTO {
 
     private Long id;
 
-    @NotNull
+    @NotNull(message = "Nome do produto é requerido")
     private String nome;
 
-    @NotNull
+    @NotNull(message = "A descrição do produto é requerida")
     private String descricao;
 
-    @NotNull
+    @NotNull(message = "O preço do produto é requerido")
     private Double preco;
 
 }

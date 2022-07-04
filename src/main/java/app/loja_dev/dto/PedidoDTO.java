@@ -13,9 +13,9 @@ import java.util.List;
 public class PedidoDTO {
 
     private Long id;
-    @NotNull
+    @NotNull(message = "Id do usuário requerido")
     private Long usuarioId;
-    @NotNull
+    @NotNull(message = "A data e hora do pedido deve ser registrada")
     private Instant momento;
     private List<Item> itens = Collections.emptyList();
 }

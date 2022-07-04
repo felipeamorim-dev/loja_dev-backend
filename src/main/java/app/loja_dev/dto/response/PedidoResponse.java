@@ -13,10 +13,11 @@ import java.util.List;
 public class PedidoResponse {
 
     private Long id;
-    @NotNull
+    @NotNull(message = "A data da criação do pedido é requerida")
     private Instant momento;
+    @NotNull(message = "O status do pedido é requerido")
     private StatusPedido statusPedido;
-    @NotNull
+    @NotNull(message = "O id do usuário é requerido")
     private Long usuarioId;
     private String nomeUsuario;
     private List<Item> itens = Collections.emptyList();

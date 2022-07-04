@@ -25,7 +25,7 @@ public class ItemServiceImpl implements ItemService {
     private ModelMapper mapper;
 
     @Override
-    public Item addItem(@Valid ItemDTO itemDTO) throws Exception {
+    public Item addItem(@Valid ItemDTO itemDTO) {
         Item newItem = new Item();
         newItem.setQuantidade(itemDTO.getQuantidade());
         newItem.setPreco(itemDTO.getPreco());
@@ -34,7 +34,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDTO> convertList(List<Item> items) throws Exception {
+    public List<ItemDTO> convertList(List<Item> items) {
         return items.stream().map(item -> mapper.map(item, ItemDTO.class)).collect(Collectors.toList());
     }
 

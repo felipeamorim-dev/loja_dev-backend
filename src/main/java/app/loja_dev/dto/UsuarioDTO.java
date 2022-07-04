@@ -13,7 +13,7 @@ public class UsuarioDTO {
 
 
     private Long id;
-    @NotNull
+    @NotNull(message = "O nome do usuário é requerido")
     private String nome;
     private String nomeUsuario;
     private String urlImagePerfil;

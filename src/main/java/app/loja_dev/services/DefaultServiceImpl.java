@@ -1,12 +1,9 @@
 package app.loja_dev.services;
 
 import app.loja_dev.entities.Default;
-import app.loja_dev.entities.Produto;
 import app.loja_dev.repositories.DefaultRepository;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
-
 import javax.persistence.EntityNotFoundException;
 import java.io.Serializable;
 import java.util.List;
@@ -21,31 +18,31 @@ public abstract class DefaultServiceImpl<E extends Default, ID extends Serializa
 
     @Override
     @Transactional
-    public List<E> findAll() throws Exception {
+    public List<E> findAll() {
         return repository.findAll();
     }
 
     @Override
     @Transactional
-    public E findByID(ID id) throws Exception {
+    public E findByID(ID id){
         return repository.findById(id).orElseThrow( () -> new EntityNotFoundException("Entidade não encontrado."));
     }
 
     @Override
     @Transactional
-    public E save(E entity) throws Exception {
+    public E save(E entity) {
         return repository.save(entity);
     }
 
     @Override
     @Transactional
-    public E update(E entity, ID id) throws Exception {
+    public E update(E entity, ID id) {
         return repository.save(entity);
     }
 
     @Override
     @Transactional
-    public boolean deleteById(ID id) throws Exception {
+    public boolean deleteById(ID id) {
         if (!ObjectUtils.isEmpty(findByID(id))){
             repository.deleteById(id);
             return true;

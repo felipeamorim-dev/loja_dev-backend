@@ -1,14 +1,13 @@
 package app.loja_dev.controllers;
 
-import app.loja_dev.dto.ProdutoDTO;
 import app.loja_dev.dto.UsuarioDTO;
 import app.loja_dev.entities.Carteira;
-import app.loja_dev.entities.Produto;
 import app.loja_dev.entities.Usuario;
 import app.loja_dev.services.CarteiraService;
 import app.loja_dev.services.UsuarioService;
-import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,15 +15,17 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 import java.util.stream.Collectors;
 
 
 @RestController
 @RequestMapping(path = "/api/usuarios")
 public class UsuarioController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(UsuarioController.class);
 
     @Autowired
     private UsuarioService usuarioService;
@@ -34,72 +35,65 @@ public class UsuarioController {
     private ModelMapper modelMapper;
 
     @PostMapping
-    public ResponseEntity<?> criar(@Valid @RequestBody Usuario usuario){
+    public ResponseEntity<UsuarioDTO> criar(@Valid @RequestBody Usuario usuario){
         try {
+            LOGGER.info("Validando dados do usuario: {}", usuario.getNome());
             URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(usuario.getId()).toUri();
             Usuario u = usuarioService.save(usuario);
             Carteira carteira = new Carteira(u, 0.0);
+            LOGGER.info("Salvando dados do usuario no banco de dados");
             carteiraService.save(carteira);
             return ResponseEntity.created(uri).body(modelMapper.map(u, UsuarioDTO.class));
         } catch (Exception e) {
+            LOGGER.error("Erro ao tentar realizar o salvamento do usuario no banco de dados");
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Erro ao tentar salvar o usuário");
         }
     }
 
     @GetMapping
-    public ResponseEntity<?> getAll(){
+    public ResponseEntity<List<UsuarioDTO>> getAll(){
 
-        try {
-            return ResponseEntity.ok().body(
-                    usuarioService.findAll()
-                            .stream()
-                            .map(usuario -> modelMapper.map(usuario, UsuarioDTO.class))
-                            .collect(Collectors.toList()));
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Erro ao tentar buscar usuarios.");
-        }
+        LOGGER.info("Buscando todos os usuarios no banco de dados");
+        return ResponseEntity.ok().body(
+                usuarioService.findAll()
+                        .stream()
+                        .map(usuario -> modelMapper.map(usuario, UsuarioDTO.class))
+                        .collect(Collectors.toList()));
     }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id){
-        try {
-            if(ObjectUtils.isEmpty(id)) {
-                return new ResponseEntity("Usuário não encontrado", HttpStatus.NOT_FOUND);
-            } else {
-                return ResponseEntity.ok().body(modelMapper.map(usuarioService.findByID(id), UsuarioDTO.class));
-            }
-        }catch (Exception e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Nenhum usuário foi encontrado.");
+
+        LOGGER.info("Validando o id para recuperar os dados do usuari no banco de dados");
+        if(ObjectUtils.isEmpty(id)) {
+            throw new IllegalArgumentException("Id do usuario não encontrado");
+        } else {
+            LOGGER.info("Buscando dados do usuario pelo id: {}", id);
+            return ResponseEntity.ok().body(modelMapper.map(usuarioService.findByID(id), UsuarioDTO.class));
         }
     }
 
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<?> atualizar(@Valid @RequestBody Usuario usuario, @PathVariable Long id){
-        try{
-            Usuario u = usuarioService.findByID(id);
-            if(ObjectUtils.isEmpty(u)){
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Nenhum usuário encontrado para realizar atualização de dados");
-            }
-            modelMapper.map(usuario, u);
-            usuarioService.save(u);
-            return ResponseEntity.ok().body(modelMapper.map(usuarioService.save(u), UsuarioDTO.class));
-        }catch (Exception e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Erro na atualização dos dados do usuário.");
-        }
+
+        LOGGER.info("Validando o usuario para realizar atualização de seus dados");
+        Usuario u = usuarioService.findByID(id);
+        modelMapper.map(usuario, u);
+        usuarioService.save(u);
+        LOGGER.info("Dados do usuario {} atualizados", id);
+        return ResponseEntity.ok().body(modelMapper.map(usuarioService.save(u), UsuarioDTO.class));
     }
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id){
-        try{
-            if(ObjectUtils.isEmpty(usuarioService.findByID(id))){
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Nenhum usuário encontrado para realizar atualização de dados");
-            } else {
-                usuarioService.deleteById(id);
-                return ResponseEntity.noContent().build();
-            }
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Não foi possível deletar o usuário.");
+
+        LOGGER.info("Validação do usuário pelo id {} para exclusão de registro", id);
+        if(ObjectUtils.isEmpty(usuarioService.findByID(id))){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Nenhum usuário encontrado para realizar atualização de dados");
+        } else {
+            usuarioService.deleteById(id);
+            return ResponseEntity.noContent().build();
         }
     }
 }

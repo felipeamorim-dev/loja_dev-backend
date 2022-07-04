@@ -8,10 +8,10 @@ import javax.validation.constraints.NotNull;
 public class ItemDTO {
 
     private Long id;
-    @NotNull
+    @NotNull(message = "A quantidade de do produto no item é requerido")
     private Integer quantidade;
-    @NotNull
+    @NotNull(message = "O preço do produto é requerido")
     private Double preco;
-    @NotNull
+    @NotNull(message = "O id do produto é requerido")
     private Long produtoId;
 }

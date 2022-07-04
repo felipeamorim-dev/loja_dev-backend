@@ -11,8 +11,8 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class CarteiraRequestDTO {
 
-    @NotNull
+    @NotNull(message = "O id do usuário é requerido")
     private Long usuarioId;
-    @NotNull
+    @NotNull(message = "O saldo da conta do usuário é requerido")
     private Double valor;
 }

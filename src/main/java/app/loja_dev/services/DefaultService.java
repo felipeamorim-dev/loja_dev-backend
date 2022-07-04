@@ -7,10 +7,10 @@ import java.util.List;
 
 public interface DefaultService<E extends Default, ID extends Serializable> {
 
-    public List<E> findAll() throws Exception;
-    public E findByID(ID id) throws Exception;
-    public E save(E entity) throws Exception;
-    public E update(E entity, ID id) throws Exception;
-    public boolean deleteById(ID id) throws Exception;
+    public List<E> findAll();
+    public E findByID(ID id);
+    public E save(E entity);
+    public E update(E entity, ID id);
+    public boolean deleteById(ID id);
 
 }

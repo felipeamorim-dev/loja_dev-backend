@@ -39,7 +39,7 @@ public class CarrinhoServiceImpl implements CarrinhoService {
     }
 
     @Override
-    public Carrinho create(Long usuarioId) throws Exception {
+    public Carrinho create(Long usuarioId) {
         Carrinho car = new Carrinho();
         Usuario user = usuarioService.findByID(usuarioId);
         if (!isEmpty(user)) {
@@ -49,7 +49,7 @@ public class CarrinhoServiceImpl implements CarrinhoService {
     }
 
     @Override
-    public Carrinho addItemCarrinho(ItemDTO itemDTO, Long usuarioId) throws Exception {
+    public Carrinho addItemCarrinho(ItemDTO itemDTO, Long usuarioId) {
         Carrinho car = findByUsuario(usuarioId);
         Item item = itemService.addItem(itemDTO);
         int count = car.getItens()
@@ -65,13 +65,13 @@ public class CarrinhoServiceImpl implements CarrinhoService {
     }
 
     @Override
-    public List<ItemDTO> findAllItens(Long usuarioId) throws Exception {
+    public List<ItemDTO> findAllItens(Long usuarioId) {
         Carrinho car = findByUsuario(usuarioId);
         return itemService.convertList(car.getItens());
     }
 
     @Override
-    public void updateItem(Long usuarioId, ItemDTO itemDTO) throws Exception {
+    public void updateItem(Long usuarioId, ItemDTO itemDTO) {
         Carrinho car = findByUsuario(usuarioId);
         List<Item> itemUpdate = car.getItens().stream().filter(item -> item.getId() == itemDTO.getId()).collect(Collectors.toList());
 
@@ -100,7 +100,7 @@ public class CarrinhoServiceImpl implements CarrinhoService {
     }
 
     @Override
-    public void deleteCarrinho(Long usuarioId) throws Exception {
+    public void deleteCarrinho(Long usuarioId) {
         Carrinho car = findByUsuario(usuarioId);
         carrinhoRepository.deleteById(car.getId());
     }
