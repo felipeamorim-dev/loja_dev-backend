@@ -35,67 +35,41 @@ public class PedidoController {
 
     @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody PedidoDTO pedidoDTO){
-        try {
-            LOGGER.info("Criando pedido: {}", pedidoDTO);
-            Pedido pedido = pedidoService.createPedido(pedidoDTO);
-            return new ResponseEntity<>(mapper.map(pedido, PedidoResponse.class), HttpStatus.CREATED);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Erro ao adicionar o pedido do usuário");
-        }
+        LOGGER.info("Criando pedido: {}", pedidoDTO);
+        Pedido pedido = pedidoService.createPedido(pedidoDTO);
+        return new ResponseEntity<>(mapper.map(pedido, PedidoResponse.class), HttpStatus.CREATED);
     }
 
     @GetMapping
     public ResponseEntity<?> findAllPedidoPerStatusAndUsuario(@RequestParam("usuarioId") Long usuarioId, @RequestParam(name = "status") Integer status) {
-        try{
-            LOGGER.info("Buscando pedido do usuario: {} com status: {}", usuarioId, status);
-            return ResponseEntity.ok(pedidoService.findAllPedidoPerStatusAndUsuarioId(status, usuarioId).stream()
-                    .map(pedido -> mapper.map(pedido,  PedidoResponse.class))
-                    .collect(Collectors.toList()));
-        }catch (Exception e){
-            e.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Erro ao tentar buscar por pedidos do usuario");
-        }
+        LOGGER.info("Buscando pedido do usuario: {} com status: {}", usuarioId, status);
+        return ResponseEntity.ok(pedidoService.findAllPedidoPerStatusAndUsuarioId(status, usuarioId).stream()
+                .map(pedido -> mapper.map(pedido,  PedidoResponse.class))
+                .collect(Collectors.toList()));
     }
 
     @GetMapping(path = "/usuario")
     public ResponseEntity<?> findAllPedidoPerUsuario(@RequestParam("usuarioId") Long usuarioId) {
-        try{
-            LOGGER.info("Buscando pedido do usuario: {}", usuarioId);
-            return ResponseEntity.ok(pedidoService.findAllPedidoPerUsuarioId(usuarioId).stream()
-                    .map(pedido -> mapper.map(pedido,  PedidoResponse.class))
-                    .collect(Collectors.toList()));
-        }catch (Exception e){
-            e.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Erro ao tentar buscar por pedidos do usuario");
-        }
+        LOGGER.info("Buscando pedido do usuario: {}", usuarioId);
+        return ResponseEntity.ok(pedidoService.findAllPedidoPerUsuarioId(usuarioId).stream()
+                .map(pedido -> mapper.map(pedido,  PedidoResponse.class))
+                .collect(Collectors.toList()));
     }
 
     @GetMapping(path = "/encontrar")
     public ResponseEntity<?> findByPedidoId(@RequestParam("pedidoId") Long pedidoId){
-        try {
-            LOGGER.info("Buscando pedido pelo id: {}", pedidoId);
-            return ResponseEntity.ok(mapper.map(pedidoService.findPedidoById(pedidoId), PedidoResponse.class));
-        }catch (Exception e) {
-            e.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-        }
+        LOGGER.info("Buscando pedido pelo id: {}", pedidoId);
+        return ResponseEntity.ok(mapper.map(pedidoService.findPedidoById(pedidoId), PedidoResponse.class));
     }
 
     @PutMapping(path = "/atualizar")
     public ResponseEntity<?> updateStatusPedido(@RequestParam Map<String, String> allParams) {
-        try {
-            if (allParams.containsKey("status") && allParams.containsKey("pedidoId")) {
-                LOGGER.info("Atualizando o pedido: {}, para o status: {}", allParams.get("pedidoId"), allParams.get("status"));
-                pedidoService.updateStatusPedido(Integer.parseInt(allParams.get("status")), Long.parseLong(allParams.get("pedidoId")));
-                return ResponseEntity.noContent().build();
-            } else {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Status ou id do projeto inválido");
-            }
-        }catch (Exception e) {
-            e.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        if (allParams.containsKey("status") && allParams.containsKey("pedidoId")) {
+            LOGGER.info("Atualizando o pedido: {}, para o status: {}", allParams.get("pedidoId"), allParams.get("status"));
+            pedidoService.updateStatusPedido(Integer.parseInt(allParams.get("status")), Long.parseLong(allParams.get("pedidoId")));
+            return ResponseEntity.noContent().build();
+        } else {
+            throw new IllegalArgumentException("Status ou id do projeto inválido");
         }
-
     }
 }

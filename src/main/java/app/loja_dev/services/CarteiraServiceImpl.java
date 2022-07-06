@@ -1,6 +1,8 @@
 package app.loja_dev.services;
 
 import app.loja_dev.entities.Carteira;
+import app.loja_dev.exceptions.InsufficientBalanceException;
+import app.loja_dev.exceptions.ObjectNotFoundExceptions;
 import app.loja_dev.repositories.CarteiraRepository;
 import app.loja_dev.repositories.DefaultRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,28 +22,34 @@ public class CarteiraServiceImpl extends DefaultServiceImpl<Carteira, Long> impl
 
     @Override
     public Double comprarMoeda(Double valor, Long usuarioId) {
-        Carteira carteira = carteiraRepository.getByUsuario(usuarioId);
+        Carteira carteira = carteiraRepository.getByUsuario(usuarioId)
+                .orElseThrow(() -> new ObjectNotFoundExceptions("Usuário não encontrado"));
 
-        //TODO: IMPLEMENTAR A EXCEÇÃO PERSONALIZADA PARA O CASO DO SALDO INVÁLIDO
         if (carteira.getSaldo() >= 0) {
             carteira.setSaldo(carteira.getSaldo() + valor);
+        } else {
+            throw new InsufficientBalanceException("Saldo insuficiente");
         }
-
          return carteiraRepository.save(carteira).getSaldo();
     }
 
     @Override
     public Double saldo(Long usuarioId) {
-         return carteiraRepository.getByUsuario(usuarioId).getSaldo() >= 0 ? carteiraRepository.getByUsuario(usuarioId).getSaldo() : ZERO;
+        Carteira carteira = carteiraRepository.getByUsuario(usuarioId)
+                .orElseThrow(() -> new ObjectNotFoundExceptions("Usuário não encontrado"));
+
+        return carteira.getSaldo() > 0 ? carteira.getSaldo() : ZERO;
     }
 
     @Override
     public Double descontaSaldo(Double valor, Long usuarioId) {
-        Carteira carteira = carteiraRepository.getByUsuario(usuarioId);
+        Carteira carteira = carteiraRepository.getByUsuario(usuarioId)
+                .orElseThrow(() -> new ObjectNotFoundExceptions("Usuário não encontrado"));
 
-        //TODO: IMPLEMENTAR A EXCEÇÃO PERSONALIZADA PARA O CASO DO SALDO INVÁLIDO
         if (carteira.getSaldo() >= 0) {
             carteira.setSaldo(carteira.getSaldo() - valor);
+        } else {
+            throw new InsufficientBalanceException("Saldo insuficiente");
         }
 
         return carteiraRepository.save(carteira).getSaldo();
