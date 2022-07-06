@@ -1,6 +1,7 @@
 
 -- Insert para usuários utilizados no perfil de testes.
-insert into usuario(id, nome, email, username_github, senha) values(1, 'Felipe Amorim', 'felipeamorim.dev@gmail.com', 'felipeamorim-dev', '123');
+insert into usuario(id, nome, email, username_github, senha) values(1, 'Felipe Amorim', 'felipeamorim.dev@gmail.com', 'felipeamorim-dev', '$2a$12$pNjV.n4.NtlKf5JL6LSWbeESMXKGQyX9k1pbUXa0yiUlPTuvJuztG');
+insert into perfis(usuario_id, perfis) values (1, 0);
 insert into carteira(id, saldo, id_usuario) values(1, 500.0, 1);
 insert into carrinho(id_usuario) values(1);
 

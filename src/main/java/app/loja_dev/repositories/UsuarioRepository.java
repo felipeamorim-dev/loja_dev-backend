@@ -16,4 +16,6 @@ public interface UsuarioRepository extends DefaultRepository<Usuario, Long>{
             "FROM usuario u INNER JOIN carteira c ON u.id = c.id_usuario INNER JOIN carrinho car ON u.id_carrinho = car.id WHERE u.id = :id")
     Optional<Usuario> findById(@Param("id") Long id);
 
+    Optional<Usuario> findByNomeUsuario(String nomeUsuario);
+
 }

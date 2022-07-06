@@ -1,5 +1,6 @@
 package app.loja_dev.entities;
 
+import app.loja_dev.enums.Perfil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.Fetch;
@@ -8,7 +9,9 @@ import org.springframework.data.util.Lazy;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "usuario")
@@ -29,6 +32,10 @@ public class Usuario extends Default{
     @Column(unique = true, name = "senha", nullable = false)
     private String senha;
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "perfis")
+    private Set<Perfil> perfis = new HashSet<>();
+
     @Column(name = "url_image_perfil")
     private String urlImagePerfil;
 
@@ -41,4 +48,10 @@ public class Usuario extends Default{
     @JoinColumn(name = "id_carrinho", referencedColumnName = "id")
     private Carrinho carrinho;
 
+    public Usuario(String nome, String nomeUsuario, String email, String senha) {
+        this.nome = nome;
+        this.nomeUsuario = nomeUsuario;
+        this.email = email;
+        this.senha = senha;
+    }
 }
