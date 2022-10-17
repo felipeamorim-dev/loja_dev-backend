@@ -18,7 +18,7 @@ public class Carrinho extends Default{
     )
     private List<Item> itens = new ArrayList<>();
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "id_usuario", referencedColumnName = "id")
     private Usuario usuario;
 

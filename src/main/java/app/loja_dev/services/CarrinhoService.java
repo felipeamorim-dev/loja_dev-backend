@@ -2,6 +2,8 @@ package app.loja_dev.services;
 
 import app.loja_dev.dto.ItemDTO;
 import app.loja_dev.entities.Carrinho;
+import app.loja_dev.entities.Usuario;
+
 import java.util.List;
 
 
@@ -9,7 +11,7 @@ public interface CarrinhoService {
 
     Carrinho findByUsuario( Long usuarioId);
 
-    Carrinho create(Long usuarioId);
+    Carrinho create(Usuario usuario);
 
     Carrinho addItemCarrinho(ItemDTO itemDTO, Long usuarioId);
 

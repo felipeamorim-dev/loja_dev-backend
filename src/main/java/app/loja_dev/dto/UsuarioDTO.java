@@ -20,5 +20,5 @@ public class UsuarioDTO {
     private String nome;
     private String nomeUsuario;
     private String urlImagePerfil;
-    private Set<Perfil> perfils = new HashSet<>();
+    private Set<Perfil> perfis = new HashSet<>();
 }

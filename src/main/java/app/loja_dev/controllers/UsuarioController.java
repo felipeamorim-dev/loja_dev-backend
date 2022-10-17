@@ -26,11 +26,8 @@ import java.util.stream.Collectors;
 public class UsuarioController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UsuarioController.class);
-
     @Autowired
     private UsuarioService usuarioService;
-    @Autowired
-    private CarteiraService carteiraService;
     @Autowired
     private ModelMapper modelMapper;
 
@@ -40,9 +37,8 @@ public class UsuarioController {
             LOGGER.info("Validando dados do usuario: {}", usuario.getNome());
             URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(usuario.getId()).toUri();
             Usuario u = usuarioService.save(usuario);
-            Carteira carteira = new Carteira(u, 0.0);
             LOGGER.info("Salvando dados do usuario no banco de dados");
-            carteiraService.save(carteira);
+
             return ResponseEntity.created(uri).body(modelMapper.map(u, UsuarioDTO.class));
         } catch (Exception e) {
             LOGGER.error("Erro ao tentar realizar o salvamento do usuario no banco de dados");

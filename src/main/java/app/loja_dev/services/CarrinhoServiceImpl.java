@@ -9,6 +9,7 @@ import app.loja_dev.repositories.CarrinhoRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import javax.persistence.EntityExistsException;
@@ -24,31 +25,28 @@ public class CarrinhoServiceImpl implements CarrinhoService {
     private CarrinhoRepository carrinhoRepository;
 
     @Autowired
-    private UsuarioService usuarioService;
-
-    @Autowired
     private ItemService itemService;
 
     @Autowired
     private ModelMapper mapper;
 
     @Override
+    @Transactional
     public Carrinho findByUsuario(Long usuarioId) {
         return carrinhoRepository.findByUsuario(usuarioId)
                 .orElseThrow(() -> new ObjectNotFoundExceptions("Carrinho do usuário não encontrado"));
     }
 
     @Override
-    public Carrinho create(Long usuarioId) {
+    @Transactional
+    public Carrinho create(Usuario usuario) {
         Carrinho car = new Carrinho();
-        Usuario user = usuarioService.findByID(usuarioId);
-        if (!isEmpty(user)) {
-            car.setUsuario(user);
-        }
+        car.setUsuario(usuario);
         return carrinhoRepository.save(car);
     }
 
     @Override
+    @Transactional
     public Carrinho addItemCarrinho(ItemDTO itemDTO, Long usuarioId) {
         Carrinho car = findByUsuario(usuarioId);
         Item item = itemService.addItem(itemDTO);
@@ -65,12 +63,14 @@ public class CarrinhoServiceImpl implements CarrinhoService {
     }
 
     @Override
+    @Transactional
     public List<ItemDTO> findAllItens(Long usuarioId) {
         Carrinho car = findByUsuario(usuarioId);
         return itemService.convertList(car.getItens());
     }
 
     @Override
+    @Transactional
     public void updateItem(Long usuarioId, ItemDTO itemDTO) {
         Carrinho car = findByUsuario(usuarioId);
         List<Item> itemUpdate = car.getItens().stream().filter(item -> item.getId() == itemDTO.getId()).collect(Collectors.toList());
@@ -86,6 +86,7 @@ public class CarrinhoServiceImpl implements CarrinhoService {
     }
 
     @Override
+    @Transactional
     public void deleteItem(Long usuarioId, Long itemId) {
         Carrinho car = findByUsuario(usuarioId);
         List<Item> itemRemove = car.getItens().stream().filter(item -> item.getId() == itemId).collect(Collectors.toList());
@@ -100,6 +101,7 @@ public class CarrinhoServiceImpl implements CarrinhoService {
     }
 
     @Override
+    @Transactional
     public void deleteCarrinho(Long usuarioId) {
         Carrinho car = findByUsuario(usuarioId);
         carrinhoRepository.deleteById(car.getId());

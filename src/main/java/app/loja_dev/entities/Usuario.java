@@ -44,7 +44,7 @@ public class Usuario extends Default{
     private Carteira carteira;
 
     @JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_carrinho", referencedColumnName = "id")
     private Carrinho carrinho;
 
