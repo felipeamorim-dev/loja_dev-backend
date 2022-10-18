@@ -6,6 +6,7 @@ import app.loja_dev.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -44,8 +45,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.addFilter(new JwtAuthenticationFilter(authenticationManager(), jwtUtil));
         http.addFilter(new JwtAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
         http.authorizeRequests()
-                .antMatchers(PUBLIC_MATCHERS)
-                .permitAll()
+                .mvcMatchers(HttpMethod.POST,"/api/usuarios").permitAll()
+                .antMatchers(PUBLIC_MATCHERS).permitAll()
                 .anyRequest()
                 .authenticated();
 
