@@ -5,6 +5,7 @@ import app.loja_dev.entities.Carteira;
 import app.loja_dev.entities.Usuario;
 import app.loja_dev.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
@@ -17,20 +18,30 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Autowired
     private CarteiraService carteiraService;
+
     @Autowired
     private CarrinhoService carrinhoService;
+
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Transactional
     public List<Usuario> findAll() {
         return usuarioRepository.findAll();
     }
+
     @Transactional
     public Usuario findByID(Long id){
         return usuarioRepository.findById(id).orElseThrow( () -> new EntityNotFoundException("Usuário não encontrado."));
     }
+
     @Transactional
     public Usuario save(Usuario usuario) {
+
+        usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
         Usuario usuarioResult = usuarioRepository.save(usuario);
         Carteira carteira = new Carteira(usuarioResult, 0.0);
         carteiraService.save(carteira);
@@ -39,10 +50,12 @@ public class UsuarioServiceImpl implements UsuarioService {
         usuarioResult = usuarioRepository.save(usuarioResult);
         return usuarioResult;
     }
+
     @Transactional
     public Usuario update(Usuario entity, Long id) {
         return usuarioRepository.save(entity);
     }
+
     @Transactional
     public boolean deleteById(Long id) {
         if (!ObjectUtils.isEmpty(findByID(id))){

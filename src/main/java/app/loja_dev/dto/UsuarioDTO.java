@@ -14,10 +14,10 @@ import java.util.Set;
 @NoArgsConstructor
 public class UsuarioDTO {
 
-
     private Long id;
     @NotNull(message = "O nome do usuário é requerido")
     private String nome;
+    @NotNull(message = "O username do github é requerido")
     private String nomeUsuario;
     private String urlImagePerfil;
     private Set<Perfil> perfis = new HashSet<>();
