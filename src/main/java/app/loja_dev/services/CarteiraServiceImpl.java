@@ -7,18 +7,19 @@ import app.loja_dev.repositories.CarteiraRepository;
 import app.loja_dev.repositories.DefaultRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
+
+import javax.persistence.EntityNotFoundException;
+import java.util.List;
 
 @Service
-public class CarteiraServiceImpl extends DefaultServiceImpl<Carteira, Long> implements CarteiraService{
+public class CarteiraServiceImpl implements CarteiraService{
 
     private static final double ZERO = 0.0;
 
     @Autowired
     private CarteiraRepository carteiraRepository;
-
-    public CarteiraServiceImpl(DefaultRepository<Carteira, Long> defaultRepository) {
-        super(defaultRepository);
-    }
 
     @Override
     public Double comprarMoeda(Double valor, Long usuarioId) {
@@ -53,5 +54,40 @@ public class CarteiraServiceImpl extends DefaultServiceImpl<Carteira, Long> impl
         }
 
         return carteiraRepository.save(carteira).getSaldo();
+    }
+
+    @Override
+    @Transactional
+    public List<Carteira> findAll() {
+        return carteiraRepository.findAll();
+    }
+
+    @Override
+    @Transactional
+    public Carteira findByID(Long id){
+        return carteiraRepository.findById(id).orElseThrow( () -> new EntityNotFoundException("Entidade não encontrado."));
+    }
+
+    @Override
+    @Transactional
+    public Carteira save(Carteira entity) {
+        return carteiraRepository.save(entity);
+    }
+
+    @Override
+    @Transactional
+    public Carteira update(Carteira entity, Long id) {
+        return carteiraRepository.save(entity);
+    }
+
+    @Override
+    @Transactional
+    public boolean deleteById(Long id) {
+        if (!ObjectUtils.isEmpty(findByID(id))){
+            carteiraRepository.deleteById(id);
+            return true;
+        } else {
+            return false;
+        }
     }
 }
