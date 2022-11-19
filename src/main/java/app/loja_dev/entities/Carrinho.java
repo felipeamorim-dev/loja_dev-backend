@@ -10,6 +10,9 @@ import java.util.List;
 @Data
 public class Carrinho extends Default{
 
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "item_carrinho",

@@ -50,10 +50,10 @@ public class CarrinhoServiceImpl implements CarrinhoService {
     public Carrinho addItemCarrinho(ItemDTO itemDTO, Long usuarioId) {
         Carrinho car = findByUsuario(usuarioId);
         Item item = itemService.addItem(itemDTO);
-        int count = car.getItens()
+        int count = (int) car.getItens()
                 .stream()
                 .filter(isItem -> isItem.getProduto().getId().equals(itemDTO.getProdutoId()))
-                .collect(Collectors.toList()).size();
+                .count();
 
         if (count > 0) {
             throw new EntityExistsException("O item já foi adicionado a lista");
@@ -73,7 +73,7 @@ public class CarrinhoServiceImpl implements CarrinhoService {
     @Transactional
     public void updateItem(Long usuarioId, ItemDTO itemDTO) {
         Carrinho car = findByUsuario(usuarioId);
-        List<Item> itemUpdate = car.getItens().stream().filter(item -> item.getId() == itemDTO.getId()).collect(Collectors.toList());
+        List<Item> itemUpdate = car.getItens().stream().filter(item -> item.getId().equals(itemDTO.getId())).collect(Collectors.toList());
 
         if(itemUpdate.isEmpty()) {
             throw new ObjectNotFoundExceptions("Não foi possível encontrar o item no carrinho de compras para realizar a atualização dos dados");

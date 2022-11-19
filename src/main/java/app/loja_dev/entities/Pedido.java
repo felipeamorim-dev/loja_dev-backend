@@ -23,6 +23,9 @@ import java.util.*;
 })
 public class Pedido extends Default {
 
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "status")
     private StatusPedido statusPedido;

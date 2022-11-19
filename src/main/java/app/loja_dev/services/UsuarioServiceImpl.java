@@ -12,33 +12,40 @@ import org.springframework.util.ObjectUtils;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
-
     @Autowired
     private CarteiraService carteiraService;
-
     @Autowired
     private CarrinhoService carrinhoService;
-
     @Autowired
     private UsuarioRepository usuarioRepository;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Transactional
+    @Override
     public List<Usuario> findAll() {
         return usuarioRepository.findAll();
     }
 
     @Transactional
+    @Override
     public Usuario findByID(Long id){
         return usuarioRepository.findById(id).orElseThrow( () -> new EntityNotFoundException("Usuário não encontrado."));
     }
 
+    @Override
     @Transactional
+    public Usuario findByNomeUsuario(String nomeUsuario) {
+        return usuarioRepository.findByNomeUsuario(nomeUsuario)
+                .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
+    }
+
+    @Transactional
+    @Override
     public Usuario save(Usuario usuario) {
 
         usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
@@ -52,11 +59,13 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Transactional
+    @Override
     public Usuario update(Usuario entity, Long id) {
         return usuarioRepository.save(entity);
     }
 
     @Transactional
+    @Override
     public boolean deleteById(Long id) {
         if (!ObjectUtils.isEmpty(findByID(id))){
             usuarioRepository.deleteById(id);
@@ -65,5 +74,4 @@ public class UsuarioServiceImpl implements UsuarioService {
             return false;
         }
     }
-
 }

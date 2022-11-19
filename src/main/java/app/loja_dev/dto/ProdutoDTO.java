@@ -25,4 +25,5 @@ public class ProdutoDTO {
     @NotNull(message = "O preço do produto é requerido")
     private Double preco;
 
+    private String urlImage;
 }

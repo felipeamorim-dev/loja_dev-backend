@@ -2,6 +2,7 @@ package app.loja_dev.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -11,7 +12,12 @@ import java.util.List;
 @Table(name = "items")
 @Data
 @NoArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Item extends Default{
+
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "produto_id", referencedColumnName = "id")

@@ -13,6 +13,9 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class Pagamento extends Default{
 
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @Column(name = "autorizacao")
     private boolean autorizacao;
 
@@ -22,4 +25,10 @@ public class Pagamento extends Default{
     @OneToOne
     @JoinColumn(name = "pedido_id", referencedColumnName = "id")
     private Pedido pedido;
+
+    public Pagamento(boolean autorizacao, String mensagem, Pedido pedido) {
+        this.autorizacao = autorizacao;
+        this.mensagem = mensagem;
+        this.pedido = pedido;
+    }
 }

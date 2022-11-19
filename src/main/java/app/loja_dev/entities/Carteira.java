@@ -14,10 +14,18 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class Carteira extends Default{
 
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @OneToOne
     @JoinColumn(name = "id_usuario", referencedColumnName = "id")
     private Usuario usuario;
 
     @Column(name = "saldo")
     private Double saldo;
+
+    public Carteira(Usuario usuario, Double saldo) {
+        this.usuario = usuario;
+        this.saldo = saldo;
+    }
 }

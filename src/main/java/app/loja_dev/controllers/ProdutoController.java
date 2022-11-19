@@ -28,7 +28,6 @@ public class ProdutoController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProdutoController.class);
 
     private final ProdutoService produtoService;
-
     private final ModelMapper modelMapper;
 
     @PostMapping

@@ -69,6 +69,19 @@ public class UsuarioController {
         }
     }
 
+    @GetMapping(value = "/nome/{nomeUsuario}")
+    public ResponseEntity<?> getPerUsername(@PathVariable String nomeUsuario){
+
+        LOGGER.info("Validando o nome do usuário para recuperar os seus dados");
+        if(ObjectUtils.isEmpty(nomeUsuario)) {
+            throw new IllegalArgumentException("usuario não encontrado");
+        } else {
+            LOGGER.info("Buscando dados do usuario pelo username: {}", nomeUsuario);
+            return ResponseEntity.ok().body(modelMapper
+                    .map(usuarioService.findByNomeUsuario(nomeUsuario), UsuarioDTO.class));
+        }
+    }
+
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<?> atualizar(@Valid @RequestBody Usuario usuario, @PathVariable Long id){
