@@ -11,7 +11,7 @@ import java.util.Optional;
 @Repository
 public interface CarrinhoRepository extends DefaultRepository<Carrinho, Long> {
 
-    @EntityGraph(type = EntityGraph.EntityGraphType.FETCH, attributePaths = {"usuario", "usuario.carteira", "itens"})
+    @EntityGraph(type = EntityGraph.EntityGraphType.FETCH, attributePaths = {"usuario", "usuario.perfis", "usuario.carteira"})
     @Query("SELECT c FROM Carrinho c JOIN c.usuario u WHERE u.id = :usuarioId")
     Optional<Carrinho> findByUsuario(@Param("usuarioId") Long usuarioId);
 }

@@ -1,13 +1,7 @@
 package app.loja_dev.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 
 @Entity
 @Table(name = "produtos")

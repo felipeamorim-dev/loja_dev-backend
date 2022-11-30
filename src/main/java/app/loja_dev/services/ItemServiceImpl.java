@@ -42,6 +42,4 @@ public class ItemServiceImpl implements ItemService {
     public Item findById(Long id) {
         return itemRepository.findById(id).orElseThrow(() -> new ObjectNotFoundExceptions("Item não encontrado"));
     }
-
-
 }
