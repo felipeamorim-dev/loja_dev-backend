@@ -1,7 +1,6 @@
 package app.loja_dev.services;
 
 import app.loja_dev.entities.Produto;
-import app.loja_dev.repositories.DefaultRepository;
 import app.loja_dev.repositories.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +26,12 @@ public class ProdutoServiceImpl implements ProdutoService{
     @Override
     public Produto findByID(Long id){
         return produtoRepository.findById(id).orElseThrow( () -> new EntityNotFoundException("Entidade não encontrado."));
+    }
+
+    @Transactional
+    @Override
+    public List<Produto> findAllById(List<Long> ids) {
+        return produtoRepository.findAllById(ids);
     }
     
     @Transactional

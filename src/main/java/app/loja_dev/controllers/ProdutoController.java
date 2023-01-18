@@ -56,6 +56,22 @@ public class ProdutoController {
         }
     }
 
+    @GetMapping(value = "/produtoIds")
+    public ResponseEntity<List<ProdutoDTO>> getAllById(@RequestParam("ids") List<Long> ids) {
+        LOGGER.info("Buscando todos os produtos pela lista de ids: {}", ids);
+
+        if (ids.isEmpty()) {
+            throw new IllegalArgumentException("Lista de ids está vazia");
+        }
+
+        List<ProdutoDTO> produtoDTOS = produtoService.findAllById(ids)
+                                            .stream()
+                                            .map(produto -> modelMapper.map(produto, ProdutoDTO.class))
+                                            .collect(Collectors.toList());
+
+        return ResponseEntity.ok(produtoDTOS);
+    }
+
     @PutMapping(value = "/{id}")
     public ResponseEntity<ProdutoDTO> atualizar(@Valid @RequestBody ProdutoDTO produtoDTO, @PathVariable Long id){
         LOGGER.info("Atualizando dados do produto {}", id);
